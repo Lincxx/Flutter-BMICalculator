@@ -13,12 +13,26 @@ class HomeState extends State<Home> {
   final TextEditingController _heightController = new TextEditingController();
   final TextEditingController _wightController = new TextEditingController();
 
-  double _bmi_Result = 0.0;
+  double _bmiresult;
+  String _bmiresultstring = "";
+  String _bmicategory = "";
 
   void _bmiResults() {
     setState(() {
-      _bmi_Result = calculateBMI(
+      _bmiresult = calculateBMI(
           _ageController.text, _heightController.text, _wightController.text);
+
+      _bmiresultstring = "Your BMI: ${_bmiresult.toStringAsFixed(1)}";
+
+      if (_bmiresult >= 30) {
+        _bmicategory = "Obese";
+      } else if (_bmiresult >= 25 && _bmiresult < 29.9) {
+        _bmicategory = "Overweight";
+      } else if (_bmiresult >= 18.5 && _bmiresult < 24.9) {
+        _bmicategory = "Normal";
+      } else {
+        _bmicategory = "Underweight";
+      }
     });
   }
 
@@ -100,9 +114,16 @@ class HomeState extends State<Home> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "${_bmi_Result.toStringAsFixed(1)}",
+                      "${_bmiresultstring}",
                       style: TextStyle(
                           color: Colors.lightBlue,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 26.0),
+                    ),
+                    Text(
+                      "${_bmicategory}",
+                      style: TextStyle(
+                          color: Colors.pink,
                           fontStyle: FontStyle.italic,
                           fontSize: 26.0),
                     )
